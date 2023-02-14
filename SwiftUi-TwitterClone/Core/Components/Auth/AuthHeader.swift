@@ -7,14 +7,24 @@
 
 import SwiftUI
 
-struct AuthHeader: View {
+struct AuthHeaderView: View {
+    let t1, t2: String
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-struct AuthHeader_Previews: PreviewProvider {
-    static var previews: some View {
-        AuthHeader()
+        VStack(alignment: .leading){
+            HStack{Spacer()}
+            Text(t1)
+                .font(.largeTitle)
+                .fontWeight(.semibold)
+            
+            Text(t2)
+                .font(.largeTitle)
+                .fontWeight(.semibold)
+        }
+        .frame(height: 260)
+        .padding(.leading)
+        .background(Color(.systemBlue))
+        .foregroundColor(.white)
+        .clipShape(RoundedShape(corners: .bottomRight))
+        
     }
 }

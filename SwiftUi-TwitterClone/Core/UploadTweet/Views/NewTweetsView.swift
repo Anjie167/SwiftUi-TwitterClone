@@ -6,10 +6,61 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct NewTweetsView: View {
+    @EnvironmentObject var authViewModel: AuthViewModel
+    @ObservedObject var viewModel = UploadTweetsViewModel()
+    @Environment(\.presentationMode) var presentationMode
+    
+    @State private var caption: String = ""
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack{
+            HStack{
+                Button{
+                    presentationMode.wrappedValue.dismiss()
+                }
+            label: {
+                Text("Cancel")
+                        .foregroundColor(Color(.systemBlue))
+                
+            }
+                Spacer()
+                
+                Button{
+                    viewModel.uploadTweet(withCaption: caption)
+                }
+            label: {
+                Text("Tweet")
+                        .bold()
+                        .padding(.horizontal)
+                        .padding(.vertical)
+                        .background(Color(.systemBlue))
+                        .foregroundColor(.white)
+                        .clipShape(Capsule())
+                    
+                }
+            }.padding()
+            
+            HStack(alignment: .top){
+                if let user = authViewModel.currentUser {
+                    KFImage(URL(string: user.profileImageUrl))
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 32, height:32)
+                        .clipShape(Circle())
+                }
+                    
+                    TextArea("What's Happening", text: $caption)
+            
+            }.padding()
+        }
+        .onReceive(viewModel.$didUploadTweet){ success in
+            if success {
+                presentationMode.wrappedValue.dismiss()
+            }
+        }
     }
 }
 
